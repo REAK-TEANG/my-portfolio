@@ -187,8 +187,8 @@ export default function AboutPage() {
             </JournalCard>
           }
           visual={
-            <div className="relative w-full max-w-md h-[420px] md:h-[480px]">
-              <div className="absolute top-0 left-0 w-[78%]">
+            <div className="relative w-full max-w-md h-[560px] md:h-[620px]">
+              <div className="absolute top-0 left-0 w-[74%]">
                 <Polaroid src="/journal/kick.jpg" caption="Corner kick" rotate={-4} tape="bg-accent-yellow" speed={30} />
               </div>
               <div className="absolute bottom-0 right-0 w-[70%]">
