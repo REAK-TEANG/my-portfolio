@@ -2,15 +2,42 @@ import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import { LinkedinLogo, InstagramLogo, BehanceLogo, PaperPlaneRight } from '@phosphor-icons/react';
 
-export default function Contact() {
-  const [formState, setFormState] = useState('idle'); // idle, submitting, success
+const MY_EMAIL = 'broreakzxz@gmail.com';
+// Optional: set VITE_FORM_ENDPOINT in .env to send messages straight to your inbox.
+const FORM_ENDPOINT = import.meta.env.VITE_FORM_ENDPOINT;
 
-  const handleSubmit = (e) => {
+export default function Contact() {
+  const [formState, setFormState] = useState('idle'); // idle, submitting, success, error
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
+    const form = e.currentTarget;
+    const data = Object.fromEntries(new FormData(form));
     setFormState('submitting');
-    setTimeout(() => {
-      setFormState('success');
-    }, 1500);
+
+    // 1) If a form service is configured (see .env.example), send through it.
+    if (FORM_ENDPOINT) {
+      try {
+        const res = await fetch(FORM_ENDPOINT, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
+          body: JSON.stringify(data),
+        });
+        if (!res.ok) throw new Error('Request failed');
+        form.reset();
+        setFormState('success');
+      } catch {
+        setFormState('error');
+      }
+      return;
+    }
+
+    // 2) Otherwise open the visitor's email app with the message filled in.
+    const subject = encodeURIComponent(`Portfolio message: ${data.project} (${data.name})`);
+    const body = encodeURIComponent(`${data.message}\n\n- ${data.name}\n${data.email}`);
+    window.location.href = `mailto:${MY_EMAIL}?subject=${subject}&body=${body}`;
+    form.reset();
+    setFormState('success');
   };
 
   return (
@@ -91,17 +118,17 @@ export default function Contact() {
               <form onSubmit={handleSubmit} className="space-y-6">
                 <div>
                   <label className="block font-mono text-sm font-bold uppercase mb-2">Name</label>
-                  <input required type="text" className="w-full bg-white border-2 border-ink px-4 py-3 font-sans focus:outline-none focus:ring-4 focus:ring-accent-pink/50 transition-all" placeholder="John Doe" />
+                  <input required name="name" type="text" className="w-full bg-white border-2 border-ink px-4 py-3 font-sans focus:outline-none focus:ring-4 focus:ring-accent-pink/50 transition-all" placeholder="John Doe" />
                 </div>
                 
                 <div>
                   <label className="block font-mono text-sm font-bold uppercase mb-2">Email</label>
-                  <input required type="email" className="w-full bg-white border-2 border-ink px-4 py-3 font-sans focus:outline-none focus:ring-4 focus:ring-accent-pink/50 transition-all" placeholder="john@example.com" />
+                  <input required name="email" type="email" className="w-full bg-white border-2 border-ink px-4 py-3 font-sans focus:outline-none focus:ring-4 focus:ring-accent-pink/50 transition-all" placeholder="john@example.com" />
                 </div>
 
                 <div>
                   <label className="block font-mono text-sm font-bold uppercase mb-2">Project Type</label>
-                  <select className="w-full bg-white border-2 border-ink px-4 py-3 font-sans focus:outline-none focus:ring-4 focus:ring-accent-pink/50 transition-all appearance-none cursor-pointer">
+                  <select name="project" className="w-full bg-white border-2 border-ink px-4 py-3 font-sans focus:outline-none focus:ring-4 focus:ring-accent-pink/50 transition-all appearance-none cursor-pointer">
                     <option>UI/UX Design</option>
                     <option>Web Development</option>
                     <option>Brand Identity</option>
@@ -111,11 +138,17 @@ export default function Contact() {
 
                 <div>
                   <label className="block font-mono text-sm font-bold uppercase mb-2">Message</label>
-                  <textarea required rows="4" className="w-full bg-white border-2 border-ink px-4 py-3 font-sans focus:outline-none focus:ring-4 focus:ring-accent-pink/50 transition-all resize-none" placeholder="Tell me about your project..."></textarea>
+                  <textarea required name="message" rows="4" className="w-full bg-white border-2 border-ink px-4 py-3 font-sans focus:outline-none focus:ring-4 focus:ring-accent-pink/50 transition-all resize-none" placeholder="Tell me about your project..."></textarea>
                 </div>
 
-                <button 
-                  type="submit" 
+                {formState === 'error' && (
+                  <p className="font-mono text-sm font-bold bg-accent-pink/40 border-2 border-ink px-3 py-2">
+                    Oops, that didn't send. Please try again or email me directly.
+                  </p>
+                )}
+
+                <button
+                  type="submit"
                   disabled={formState === 'submitting'}
                   className="w-full bg-ink text-white font-mono font-bold uppercase py-4 border-2 border-ink hover:bg-white hover:text-ink transition-colors flex items-center justify-center gap-2 group disabled:opacity-70"
                 >
