@@ -52,17 +52,17 @@ export default function Contact() {
           transition={{ duration: 0.6, type: "spring" }}
           className="flex flex-col justify-center"
         >
-          <h2 className="font-display text-4xl md:text-5xl text-ink leading-tight mb-6">
+          <h2 className="font-display text-3xl md:text-5xl text-ink leading-tight mb-6 text-balance">
             Have a good problem? Let's solve it together.
           </h2>
-          <p className="font-sans text-lg text-ink/80 mb-12 max-w-md">
+          <p className="font-sans text-base md:text-lg text-ink/80 mb-10 md:mb-12 max-w-md">
             Whether you have a project in mind, an interesting opportunity, or just want to exchange ideas, I'd love to hear from you.
           </p>
 
           <div className="space-y-6">
             <div>
               <p className="font-mono text-sm font-bold text-ink/50 uppercase mb-1">Email</p>
-              <a href="mailto:broreakzxz@gmail.com" className="font-sans text-2xl font-bold text-ink hover:text-accent-pink transition-colors">
+              <a href="mailto:broreakzxz@gmail.com" className="font-sans text-xl md:text-2xl break-words font-bold text-ink hover:text-accent-pink transition-colors">
                 broreakzxz@gmail.com
               </a>
             </div>
@@ -162,11 +162,7 @@ export default function Contact() {
 
       </div>
 
-      <div className="mt-32 text-center pb-8">
-        <p className="font-mono text-sm font-bold uppercase text-ink/50">
-          © {new Date().getFullYear()} Teang Arpireak. Crafted with passion.
-        </p>
-      </div>
+      <div className="pb-8" />
     </section>
   );
 }

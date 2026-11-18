@@ -42,7 +42,7 @@ export default function ProjectDetail() {
   }, [id]);
 
   return (
-    <div className="min-h-screen bg-paper pb-24 bg-ruled-paper bg-ruled">
+    <div className="min-h-svh bg-paper pb-24 bg-ruled-paper bg-ruled">
       {/* Header / Navigation */}
       <nav className="fixed top-0 left-0 w-full bg-paper/90 backdrop-blur-sm z-50 border-b-2 border-ink border-dashed">
         <div className="max-w-7xl mx-auto px-4 h-16 flex items-center">
@@ -69,7 +69,7 @@ export default function ProjectDetail() {
               </span>
             ))}
           </div>
-          <h1 className="font-display text-4xl md:text-6xl text-ink leading-tight mb-8">
+          <h1 className="font-display text-3xl md:text-6xl text-ink leading-tight mb-8 text-balance">
             {project.title}
           </h1>
           
@@ -115,37 +115,37 @@ export default function ProjectDetail() {
             className="md:col-span-8 space-y-12 bg-white p-8 md:p-12 border-2 border-ink shadow-[8px_8px_0_0_#2b2a29]"
           >
             <section>
-              <h2 className="font-handwriting text-4xl mb-4 relative inline-block">
+              <h2 className="font-handwriting text-3xl md:text-4xl mb-4 relative inline-block">
                 Overview
                 <svg className="absolute -bottom-2 left-0 w-full h-2 text-accent-green" viewBox="0 0 100 10" preserveAspectRatio="none">
                   <path d="M0,5 Q25,10 50,5 T100,5" fill="none" stroke="currentColor" strokeWidth="3" />
                 </svg>
               </h2>
-              <p className="font-sans text-lg text-ink/80 leading-relaxed">
+              <p className="font-sans text-base md:text-lg text-ink/80 leading-relaxed">
                 {project.description}
               </p>
             </section>
 
             <section>
-              <h2 className="font-handwriting text-4xl mb-4 relative inline-block">
+              <h2 className="font-handwriting text-3xl md:text-4xl mb-4 relative inline-block">
                 The Challenge
                 <svg className="absolute -bottom-2 left-0 w-full h-2 text-accent-pink" viewBox="0 0 100 10" preserveAspectRatio="none">
                   <path d="M0,5 Q25,0 50,5 T100,5" fill="none" stroke="currentColor" strokeWidth="3" />
                 </svg>
               </h2>
-              <p className="font-sans text-lg text-ink/80 leading-relaxed">
+              <p className="font-sans text-base md:text-lg text-ink/80 leading-relaxed">
                 {project.challenge}
               </p>
             </section>
 
             <section>
-              <h2 className="font-handwriting text-4xl mb-4 relative inline-block">
+              <h2 className="font-handwriting text-3xl md:text-4xl mb-4 relative inline-block">
                 The Solution
                 <svg className="absolute -bottom-2 left-0 w-full h-2 text-accent-blue" viewBox="0 0 100 10" preserveAspectRatio="none">
                   <path d="M0,5 Q25,10 50,5 T100,5" fill="none" stroke="currentColor" strokeWidth="3" />
                 </svg>
               </h2>
-              <p className="font-sans text-lg text-ink/80 leading-relaxed">
+              <p className="font-sans text-base md:text-lg text-ink/80 leading-relaxed">
                 {project.solution}
               </p>
             </section>
@@ -155,7 +155,7 @@ export default function ProjectDetail() {
         {/* Tech Stack */}
         {project.stack && (
           <section className="mt-16">
-            <h2 className="font-handwriting text-4xl mb-6">Built with</h2>
+            <h2 className="font-handwriting text-3xl md:text-4xl mb-6">Built with</h2>
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
               {project.stack.map((s, i) => (
                 <div key={s.name} className={`border-2 border-ink p-6 shadow-[6px_6px_0_0_#2b2a29] ${['bg-accent-blue/40', 'bg-accent-pink/40', 'bg-accent-green/40'][i % 3]}`}>
@@ -170,7 +170,7 @@ export default function ProjectDetail() {
         {/* Screenshot Gallery */}
         {project.gallery && (
           <section className="mt-16">
-            <h2 className="font-handwriting text-4xl mb-8">Inside the system</h2>
+            <h2 className="font-handwriting text-3xl md:text-4xl mb-8">Inside the system</h2>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-10">
               {project.gallery.map((g, i) => (
                 <motion.figure

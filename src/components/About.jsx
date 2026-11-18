@@ -3,11 +3,33 @@ import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { Draggable } from 'gsap/Draggable';
 import { Link } from 'react-router-dom';
+import {
+  Layout, PenNib, Palette, FilmStrip, CursorClick, FigmaLogo, Image as ImageIcon,
+  Code, FileJs, Atom, Wind, Database, Cube, DeviceMobile,
+} from '@phosphor-icons/react';
 
 gsap.registerPlugin(ScrollTrigger, Draggable);
 
 const designSkills = ['UI/UX Design', 'Graphic Design', 'Brand Identity', 'Visual Storytelling', 'Prototyping', 'Figma', 'Photoshop'];
-const devSkills = ['HTML & CSS', 'JavaScript', 'React', 'Tailwind CSS', 'Laravel', 'Responsive Design'];
+const devSkills = ['HTML & CSS', 'JavaScript', 'React', 'Tailwind CSS', 'PHP', 'PostgreSQL', 'Laravel', 'Responsive Design'];
+
+const skillIcons = {
+  'UI/UX Design': Layout,
+  'Graphic Design': PenNib,
+  'Brand Identity': Palette,
+  'Visual Storytelling': FilmStrip,
+  'Prototyping': CursorClick,
+  'Figma': FigmaLogo,
+  'Photoshop': ImageIcon,
+  'HTML & CSS': Code,
+  'JavaScript': FileJs,
+  'React': Atom,
+  'Tailwind CSS': Wind,
+  'PHP': Code,
+  'PostgreSQL': Database,
+  'Laravel': Cube,
+  'Responsive Design': DeviceMobile,
+};
 
 export default function About() {
   const sectionRef = useRef(null);
@@ -138,7 +160,7 @@ export default function About() {
         <div className="space-y-12">
           
           {/* Photo Stack Container */}
-          <div className="relative w-72 mx-auto lg:mx-0 z-10 fade-up" style={{ perspective: '1000px' }}>
+          <div className="relative w-60 sm:w-72 mx-auto lg:mx-0 z-10 fade-up" style={{ perspective: '1000px' }}>
             <div 
               ref={stackContainerRef}
               className="relative cursor-pointer transform-style-3d group"
@@ -170,8 +192,8 @@ export default function About() {
           </div>
 
           <div className="space-y-4 fade-up">
-            <h2 className="font-display text-4xl text-ink">ABOUT ME</h2>
-            <p className="font-sans text-lg text-ink/80 leading-relaxed bio-text">
+            <h2 className="font-display text-3xl md:text-4xl text-ink">ABOUT ME</h2>
+            <p className="font-sans text-base md:text-lg text-ink/80 leading-relaxed bio-text">
               I’m <span className="font-bold text-ink bg-accent-yellow px-1">Teang Arpireak</span>, a graphic and UI/UX designer based in Siem Reap, Cambodia. I enjoy turning ideas into 
               <span className="relative inline-block highlight-text mx-1 font-bold text-ink cursor-default">
                 meaningful visual experiences
@@ -181,7 +203,7 @@ export default function About() {
               </span>, 
               combining thoughtful design, intuitive interfaces, and a passion for solving real-world problems.
             </p>
-            <p className="font-sans text-lg text-ink/80 leading-relaxed bio-text">
+            <p className="font-sans text-base md:text-lg text-ink/80 leading-relaxed bio-text">
               From brand identities to digital products, I focus on making every detail 
               <span className="relative inline-block highlight-text mx-1 font-bold text-ink cursor-default">
                 purposeful
@@ -210,7 +232,8 @@ export default function About() {
             </h3>
             <div className="flex flex-wrap gap-3">
               {designSkills.map((skill, idx) => (
-                <div key={`design-${idx}`} className="skill-badge bg-accent-blue/20 border-2 border-ink px-4 py-2 torn-edge font-mono font-bold text-sm cursor-grab active:cursor-grabbing hover:bg-accent-blue transition-colors shadow-[2px_2px_0_0_#2b2a29] z-10">
+                <div key={`design-${idx}`} className="skill-badge bg-accent-blue/20 border-2 border-ink px-4 py-2 torn-edge font-mono font-bold text-sm cursor-grab active:cursor-grabbing hover:bg-accent-blue transition-colors shadow-[2px_2px_0_0_#2b2a29] z-10 inline-flex items-center gap-2">
+                  {React.createElement(skillIcons[skill] || Code, { size: 16, weight: 'bold' })}
                   {skill}
                 </div>
               ))}
@@ -225,7 +248,8 @@ export default function About() {
             </h3>
             <div className="flex flex-wrap gap-3">
               {devSkills.map((skill, idx) => (
-                <div key={`dev-${idx}`} className="skill-badge bg-accent-yellow/30 border-2 border-ink px-4 py-2 torn-edge font-mono font-bold text-sm cursor-grab active:cursor-grabbing hover:bg-accent-yellow transition-colors shadow-[2px_2px_0_0_#2b2a29] z-10">
+                <div key={`dev-${idx}`} className="skill-badge bg-accent-yellow/30 border-2 border-ink px-4 py-2 torn-edge font-mono font-bold text-sm cursor-grab active:cursor-grabbing hover:bg-accent-yellow transition-colors shadow-[2px_2px_0_0_#2b2a29] z-10 inline-flex items-center gap-2">
+                  {React.createElement(skillIcons[skill] || Code, { size: 16, weight: 'bold' })}
                   {skill}
                 </div>
               ))}

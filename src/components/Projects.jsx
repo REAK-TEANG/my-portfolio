@@ -28,6 +28,10 @@ export default function Projects() {
       {/* background doodles */}
       <div className="absolute inset-0 opacity-[0.07] pointer-events-none" style={{ backgroundImage: 'radial-gradient(circle, #f6f5f1 1.5px, transparent 1.5px)', backgroundSize: '28px 28px' }} />
 
+      {/* torn paper edges */}
+      <div className="zigzag-top absolute top-0 left-0 w-full h-[18px] z-20" />
+      <div className="zigzag-bottom absolute bottom-0 left-0 w-full h-[18px] z-20" />
+
       <motion.div
         initial={{ opacity: 0, y: 30 }}
         whileInView={{ opacity: 1, y: 0 }}
@@ -35,8 +39,8 @@ export default function Projects() {
         transition={{ duration: 0.6 }}
         className="max-w-6xl mx-auto mb-12 relative"
       >
-        <h2 className="font-display text-4xl md:text-6xl text-paper text-center">CASE STUDY</h2>
-        <p className="font-handwriting text-2xl text-accent-yellow text-center mt-4">One project, designed and built end to end</p>
+        <h2 className="font-display text-3xl sm:text-4xl md:text-6xl text-paper text-center">CASE STUDY</h2>
+        <p className="font-handwriting text-xl md:text-2xl text-accent-yellow text-center mt-4">One project, designed and built end to end</p>
       </motion.div>
 
       <div className="max-w-6xl mx-auto relative">
@@ -58,10 +62,10 @@ export default function Projects() {
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 items-start">
             {/* Left: copy */}
             <div className="lg:col-span-5 order-2 lg:order-1">
-              <h3 className="font-display text-6xl md:text-7xl leading-none">KAIRO</h3>
-              <p className="font-handwriting text-3xl text-ink/70 mt-2">Auto repair workshop system</p>
+              <h3 className="font-display text-5xl md:text-7xl leading-none">KAIRO</h3>
+              <p className="font-handwriting text-2xl md:text-3xl text-ink/70 mt-2">Auto repair workshop system</p>
 
-              <p className="font-sans text-lg leading-relaxed mt-6">
+              <p className="font-sans text-base md:text-lg leading-relaxed mt-6">
                 Repair shops juggle paper job cards, phone calls and spreadsheets. KAIRO puts appointments, repair orders, parts, invoices and a mechanic workbench into one system, and I designed and built every part of it.
               </p>
 
@@ -109,7 +113,10 @@ export default function Projects() {
             {/* Right: browser mockup with switchable screens */}
             <div className="lg:col-span-7 order-1 lg:order-2">
               <motion.div
-                initial={{ rotate: 0 }}
+                initial={{ opacity: 0, scale: 0.85, rotate: 5, y: 60 }}
+                whileInView={{ opacity: 1, scale: 1, rotate: 0, y: 0 }}
+                viewport={{ once: true, margin: '-80px' }}
+                transition={{ type: 'spring', stiffness: 90, damping: 14 }}
                 whileHover={{ rotate: -1 }}
                 className="border-2 border-ink bg-white shadow-[8px_8px_0_0_#2b2a29] rounded-lg overflow-hidden"
               >

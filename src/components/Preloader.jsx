@@ -1,13 +1,21 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 
+const SEEN_KEY = 'preloaderSeen';
+
+/** True if the loading screen already played in this browser session. */
+export const hasSeenPreloader = () => {
+  try { return sessionStorage.getItem(SEEN_KEY) === '1'; } catch { return false; }
+};
+
 export default function Preloader() {
-  const [isLoading, setIsLoading] = useState(true);
+  const [isLoading, setIsLoading] = useState(() => !hasSeenPreloader());
   const [progress, setProgress] = useState(0);
 
   useEffect(() => {
-    // We want to reach 100% in exactly 2.5 seconds
-    const duration = 2500;
+    if (!isLoading) return; // already shown this session
+    // Quick intro: reach 100% in 1.6 seconds
+    const duration = 1600;
     const intervalTime = 25;
     const steps = duration / intervalTime;
     let currentStep = 0;
@@ -27,6 +35,7 @@ export default function Preloader() {
 
     const timer = setTimeout(() => {
       setIsLoading(false);
+      try { sessionStorage.setItem(SEEN_KEY, '1'); } catch { /* ignore */ }
     }, duration);
 
     return () => {

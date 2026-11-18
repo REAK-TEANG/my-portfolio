@@ -72,8 +72,8 @@ export default function GraphicWorks() {
         transition={{ duration: 0.6 }}
         className="max-w-5xl mx-auto mb-16 text-center"
       >
-        <h2 className="font-display text-4xl md:text-6xl text-ink">GRAPHIC WORK</h2>
-        <p className="font-handwriting text-2xl text-accent-pink mt-4">
+        <h2 className="font-display text-3xl sm:text-4xl md:text-6xl text-ink">GRAPHIC WORK</h2>
+        <p className="font-handwriting text-xl md:text-2xl text-accent-pink mt-4">
           Posters, campaigns & social media for real brands
         </p>
       </motion.div>

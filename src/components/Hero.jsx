@@ -1,6 +1,48 @@
-import React, { useRef, useEffect } from 'react';
+import React, { useRef, useEffect, useState } from 'react';
 import { motion, useScroll, useTransform } from 'framer-motion';
 import gsap from 'gsap';
+import { Star, Heart, Lightning, Flower, SoccerBall } from '@phosphor-icons/react';
+
+const WORDS = ['designer', 'developer', 'football kid', 'problem solver'];
+
+/** Types and deletes the words one by one. */
+function Typewriter({ words = WORDS }) {
+  const [i, setI] = useState(0);
+  const [text, setText] = useState('');
+  const [deleting, setDeleting] = useState(false);
+
+  useEffect(() => {
+    const word = words[i % words.length];
+    let t;
+    if (!deleting && text === word) {
+      t = setTimeout(() => setDeleting(true), 1400);
+    } else if (deleting && text === '') {
+      setDeleting(false);
+      setI((n) => n + 1);
+    } else {
+      t = setTimeout(
+        () => setText(deleting ? word.slice(0, text.length - 1) : word.slice(0, text.length + 1)),
+        deleting ? 45 : 90
+      );
+    }
+    return () => clearTimeout(t);
+  }, [text, deleting, i, words]);
+
+  return (
+    <span className="bg-accent-pink/30 px-2 border-b-4 border-ink">
+      {text}
+      <span className="inline-block w-[3px] h-[1em] bg-ink align-middle ml-1 animate-pulse" />
+    </span>
+  );
+}
+
+const heroStickers = [
+  { Icon: Star, bg: 'bg-accent-yellow', pos: 'top-[24%] left-[4%]', rotate: -12, delay: 2.0 },
+  { Icon: Heart, bg: 'bg-accent-pink', pos: 'top-[18%] right-[5%]', rotate: 10, delay: 2.2 },
+  { Icon: Lightning, bg: 'bg-accent-green', pos: 'bottom-[26%] left-[5%]', rotate: 8, delay: 2.4 },
+  { Icon: SoccerBall, bg: 'bg-white', pos: 'bottom-[16%] right-[6%]', rotate: -8, delay: 2.6 },
+  { Icon: Flower, bg: 'bg-accent-blue', pos: 'top-[46%] left-[12%]', rotate: 15, delay: 2.8 },
+];
 
 export default function Hero({ globalDelay = 0 }) {
   const heroRef = useRef(null);
@@ -87,7 +129,7 @@ export default function Hero({ globalDelay = 0 }) {
   };
 
   return (
-    <section id="home" ref={heroRef} className="h-screen flex flex-col items-center justify-center relative px-4">
+    <section id="home" ref={heroRef} className="h-svh flex flex-col items-center justify-center relative px-4">
       
       {/* Parallax Container for Main Content */}
       <motion.div style={{ y: yText, opacity: opacityText }} className="w-full flex flex-col items-center justify-center z-10 will-change-transform">
@@ -119,7 +161,7 @@ export default function Hero({ globalDelay = 0 }) {
         <div className="relative mt-12 md:mt-16">
           <motion.p 
             initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.2 + globalDelay }}
-            className="font-handwriting text-3xl text-center mb-2"
+            className="font-handwriting text-2xl md:text-3xl text-center mb-2"
           >
             my name is
           </motion.p>
@@ -203,14 +245,40 @@ export default function Hero({ globalDelay = 0 }) {
           <span>OPEN TO NEW OPPORTUNITIES</span>
         </motion.div>
 
+        {/* Typewriter */}
+        <motion.p
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 1.3 + globalDelay }}
+          className="mt-6 md:mt-8 font-handwriting text-2xl md:text-4xl text-center"
+        >
+          I'm a <Typewriter />
+        </motion.p>
+
         {/* Main Headline */}
         <motion.h2 
           initial={{ y: 30, opacity: 0 }}
           animate={{ y: 0, opacity: 1 }}
           transition={{ duration: 0.8, delay: 1.4 + globalDelay }}
-          className="mt-12 text-3xl md:text-5xl lg:text-5xl font-bold font-sans text-center max-w-4xl mx-auto leading-tight px-4"
+          className="mt-8 md:mt-12 text-2xl sm:text-3xl md:text-5xl font-bold font-sans text-center max-w-4xl mx-auto leading-tight px-4 text-balance"
         >
-          I turn complex ideas into simple, thoughtful digital experiences.
+          I turn complex ideas into{' '}
+          <span className="relative inline-block">
+            simple, thoughtful
+            <svg className="absolute -bottom-2 left-0 w-full h-3 text-accent-pink -z-10" viewBox="0 0 100 10" preserveAspectRatio="none">
+              <motion.path
+                variants={svgDraw}
+                initial="hidden"
+                animate="visible"
+                d="M0,6 Q25,1 50,6 T100,5"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="5"
+                strokeLinecap="round"
+              />
+            </svg>
+          </span>{' '}
+          digital experiences.
           <motion.span 
             animate={{ rotate: 360 }} 
             transition={{ repeat: Infinity, duration: 4, ease: "linear" }}
@@ -220,6 +288,25 @@ export default function Hero({ globalDelay = 0 }) {
           </motion.span>
         </motion.h2>
       </motion.div>
+
+      {/* Draggable stickers: grab one! */}
+      {heroStickers.map(({ Icon, bg, pos, rotate, delay }, idx) => (
+        <motion.div
+          key={idx}
+          drag
+          dragMomentum
+          dragElastic={0.2}
+          initial={{ scale: 0, rotate: rotate - 80 }}
+          animate={{ scale: 1, rotate }}
+          whileHover={{ scale: 1.12 }}
+          whileTap={{ scale: 1.2, rotate: 0 }}
+          whileDrag={{ scale: 1.25, rotate: 0 }}
+          transition={{ type: 'spring', stiffness: 220, damping: 12, delay: delay + globalDelay - 1.5 }}
+          className={`absolute ${pos} hidden sm:flex w-14 h-14 md:w-16 md:h-16 ${bg} ${idx % 2 ? 'rounded-2xl' : 'rounded-full'} border-2 border-ink items-center justify-center shadow-[4px_4px_0_0_#2b2a29] cursor-grab active:cursor-grabbing z-30`}
+        >
+          <Icon size={30} weight="bold" className="text-ink pointer-events-none" />
+        </motion.div>
+      ))}
 
       {/* Floating Avatars with Parallax */}
       <div className="absolute bottom-20 left-[10%] hidden md:block z-0 will-change-transform" ref={avatar1Ref}>

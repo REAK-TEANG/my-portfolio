@@ -66,7 +66,7 @@ export default function Playground() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: '-100px' }}
           transition={{ duration: 0.5 }}
-          className="font-display text-3xl md:text-6xl text-ink uppercase inline-block relative"
+          className="font-display text-2xl sm:text-3xl md:text-6xl text-ink uppercase inline-block relative"
         >
           A little space to play
           <span className="absolute -bottom-6 right-0 font-handwriting text-accent-blue text-2xl rotate-6 normal-case">
@@ -94,7 +94,7 @@ export default function Playground() {
         {/* Board */}
         <div
           ref={boardRef}
-          className="relative mt-8 h-[520px] w-full border-2 border-ink border-dashed rounded-2xl bg-white/60 overflow-hidden touch-none select-none"
+          className="relative mt-8 h-[520px] w-full border-2 border-ink border-dashed rounded-2xl bg-white/60 overflow-hidden select-none"
           style={{ backgroundImage: 'radial-gradient(circle, #2b2a29 1px, transparent 1px)', backgroundSize: '26px 26px', backgroundPosition: '0 0' }}
         >
           {items.length === 0 && (

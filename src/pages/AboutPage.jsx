@@ -40,8 +40,8 @@ function JournalCard({ n, title, color, children }) {
       <div className={`absolute -top-4 left-6 ${color} border-2 border-ink px-3 py-1 font-handwriting text-xl -rotate-3 shadow-[3px_3px_0_0_#2b2a29]`}>
         Chapter {n}
       </div>
-      <h2 className="font-display text-3xl md:text-4xl leading-tight mt-2 mb-4">{title}</h2>
-      <div className="font-sans text-lg text-ink/85 leading-8 space-y-3">{children}</div>
+      <h2 className="font-display text-2xl md:text-4xl leading-tight mt-2 mb-4">{title}</h2>
+      <div className="font-sans text-base md:text-lg text-ink/85 leading-7 md:leading-8 space-y-3">{children}</div>
     </motion.div>
   );
 }
@@ -74,7 +74,7 @@ export default function AboutPage() {
   }, []);
 
   return (
-    <div className="min-h-screen bg-paper bg-ruled-paper bg-ruled overflow-x-hidden pb-24">
+    <div className="min-h-svh bg-paper bg-ruled-paper bg-ruled overflow-x-hidden pb-24">
       {/* top bar */}
       <nav className="fixed top-0 left-0 w-full bg-paper/90 backdrop-blur-sm z-50 border-b-2 border-ink border-dashed">
         <div className="max-w-7xl mx-auto px-4 h-16 flex items-center justify-between">
@@ -89,19 +89,19 @@ export default function AboutPage() {
       </nav>
 
       {/* ---------- Cover ---------- */}
-      <header className="min-h-screen flex flex-col items-center justify-center text-center px-4 pt-16 relative">
-        <motion.p initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.2 }} className="font-handwriting text-3xl mb-4">
+      <header className="min-h-svh flex flex-col items-center justify-center text-center px-4 pt-16 relative">
+        <motion.p initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.2 }} className="font-handwriting text-2xl md:text-3xl mb-4">
           the journal of
         </motion.p>
         <motion.h1
           initial={{ opacity: 0, y: 30, rotate: -3 }}
           animate={{ opacity: 1, y: 0, rotate: -2 }}
           transition={{ type: 'spring', stiffness: 80, damping: 12, delay: 0.3 }}
-          className="font-display text-6xl md:text-9xl leading-none bg-accent-yellow border-2 border-ink px-6 py-4 shadow-[10px_10px_0_0_#2b2a29]"
+          className="font-display text-5xl sm:text-6xl md:text-9xl leading-none bg-accent-yellow border-2 border-ink px-6 py-4 shadow-[10px_10px_0_0_#2b2a29]"
         >
           MY STORY
         </motion.h1>
-        <motion.p initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.8 }} className="font-sans text-xl mt-10 max-w-md">
+        <motion.p initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.8 }} className="font-sans text-lg md:text-xl mt-10 max-w-md">
           Teang Arpireak. From a football field in Siem Reap to designing and building digital products.
         </motion.p>
 
@@ -248,7 +248,7 @@ export default function AboutPage() {
         />
       </main>
 
-      <p className="text-center font-handwriting text-3xl text-ink/60 mt-16">to be continued… ✿</p>
+      <p className="text-center font-handwriting text-2xl md:text-3xl text-ink/60 mt-16">to be continued… ✿</p>
     </div>
   );
 }

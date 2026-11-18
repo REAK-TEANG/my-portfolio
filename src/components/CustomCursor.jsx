@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import gsap from 'gsap';
 
 // Shapes and colors for the scrapbook doodles
@@ -9,7 +9,14 @@ export default function CustomCursor() {
   const cursorRef = useRef(null);
   const doodleContainerRef = useRef(null);
 
+  // Only use the custom cursor with a real mouse, and when motion is OK
+  const [enabled] = useState(
+    () => typeof window !== 'undefined' &&
+      !window.matchMedia('(hover: none), (pointer: coarse), (prefers-reduced-motion: reduce)').matches
+  );
+
   useEffect(() => {
+    if (!enabled) return;
     const cursor = cursorRef.current;
     const doodleContainer = doodleContainerRef.current;
 
@@ -142,7 +149,9 @@ export default function CustomCursor() {
       clearTimeout(timeoutId);
       if (cleanupHoverEvents) cleanupHoverEvents();
     };
-  }, []);
+  }, [enabled]);
+
+  if (!enabled) return null;
 
   return (
     <>
