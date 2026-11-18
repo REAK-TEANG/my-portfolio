@@ -1,5 +1,5 @@
-import React from 'react';
-import { Routes, Route } from 'react-router-dom';
+import React, { useEffect } from 'react';
+import { Routes, Route, useLocation } from 'react-router-dom';
 import { ReactLenis } from 'lenis/react';
 import Navigation from './components/Navigation';
 import Preloader from './components/Preloader';
@@ -11,8 +11,20 @@ import Playground from './components/Playground';
 import Contact from './components/Contact';
 import CustomCursor from './components/CustomCursor';
 import ProjectDetail from './pages/ProjectDetail';
+import AboutPage from './pages/AboutPage';
 
 function HomePage() {
+  const { hash } = useLocation();
+
+  // Support links like "/#projects" coming from other pages
+  useEffect(() => {
+    if (!hash) return;
+    const t = setTimeout(() => {
+      document.getElementById(hash.slice(1))?.scrollIntoView({ behavior: 'smooth' });
+    }, 2900); // wait for the preloader
+    return () => clearTimeout(t);
+  }, [hash]);
+
   return (
     <div className="relative w-full min-h-screen">
       <Preloader />
@@ -42,6 +54,7 @@ function App() {
       <CustomCursor />
       <Routes>
         <Route path="/" element={<HomePage />} />
+        <Route path="/about" element={<AboutPage />} />
         <Route path="/project/:id" element={<ProjectDetail />} />
       </Routes>
     </ReactLenis>

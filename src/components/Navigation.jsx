@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
+import { useNavigate } from 'react-router-dom';
 import { Smiley, LinkedinLogo, InstagramLogo, BehanceLogo } from '@phosphor-icons/react';
 
 const navLinks = [
@@ -12,6 +13,7 @@ const navLinks = [
 
 export default function Navigation() {
   const [active, setActive] = useState('home');
+  const navigate = useNavigate();
 
   useEffect(() => {
     const sections = ['home', 'about', 'projects', 'graphics', 'playground', 'contact'];
@@ -58,6 +60,10 @@ export default function Navigation() {
             <button
               key={link.id}
               onClick={() => {
+                if (link.id === 'about') {
+                  navigate('/about'); // the full journal lives on its own page
+                  return;
+                }
                 setActive(link.id);
                 document.getElementById(link.id)?.scrollIntoView({ behavior: 'smooth' });
               }}

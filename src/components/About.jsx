@@ -2,6 +2,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { Draggable } from 'gsap/Draggable';
+import { Link } from 'react-router-dom';
 
 gsap.registerPlugin(ScrollTrigger, Draggable);
 
@@ -189,6 +190,12 @@ export default function About() {
                 </svg>
               </span>.
             </p>
+            <Link
+              to="/about"
+              className="inline-flex items-center gap-2 mt-2 bg-accent-yellow px-5 py-2 font-mono font-bold uppercase border-2 border-ink shadow-[4px_4px_0_0_#2b2a29] hover:shadow-none hover:translate-x-1 hover:translate-y-1 transition-all"
+            >
+              Read my full story →
+            </Link>
           </div>
         </div>
 
