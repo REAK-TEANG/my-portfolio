@@ -1,7 +1,10 @@
-import React, { useEffect, useRef } from 'react';
+import { useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import { motion, useScroll, useTransform, useSpring } from 'framer-motion';
 import { ArrowLeft, ArrowRight, SoccerBall } from '@phosphor-icons/react';
+import ScrollSkew from '../components/ScrollSkew';
+import { WordReveal } from '../components/Reveal';
+import { CONTACT_EMAIL } from '../config';
 
 /* ---------- Polaroid photo with scroll parallax ---------- */
 function Polaroid({ src, caption, credit, rotate = -3, tape = 'bg-accent-yellow', className = '', speed = 40 }) {
@@ -21,7 +24,7 @@ function Polaroid({ src, caption, credit, rotate = -3, tape = 'bg-accent-yellow'
       <img src={src} alt={caption} className="w-full border-2 border-ink" loading="lazy" />
       <figcaption className="font-handwriting text-2xl text-center mt-3 leading-tight">
         {caption}
-        {credit && <span className="block font-mono text-[10px] font-bold uppercase text-ink/50 mt-1">Photo: {credit}</span>}
+        {credit && <span className="block font-mono text-xs font-bold uppercase text-ink/60 mt-1">Photo: {credit}</span>}
       </figcaption>
     </motion.figure>
   );
@@ -30,19 +33,21 @@ function Polaroid({ src, caption, credit, rotate = -3, tape = 'bg-accent-yellow'
 /* ---------- Journal page (text card) ---------- */
 function JournalCard({ n, title, color, children }) {
   return (
-    <motion.div
-      initial={{ opacity: 0, y: 50, rotate: 2 }}
-      whileInView={{ opacity: 1, y: 0, rotate: -1 }}
-      viewport={{ once: true, margin: '-100px' }}
-      transition={{ type: 'spring', stiffness: 90, damping: 16 }}
-      className="relative bg-white border-2 border-ink shadow-[8px_8px_0_0_#2b2a29] p-6 md:p-8 bg-ruled-paper bg-ruled"
-    >
-      <div className={`absolute -top-4 left-6 ${color} border-2 border-ink px-3 py-1 font-handwriting text-xl -rotate-3 shadow-[3px_3px_0_0_#2b2a29]`}>
-        Chapter {n}
-      </div>
-      <h2 className="font-display text-2xl md:text-4xl leading-tight mt-2 mb-4">{title}</h2>
-      <div className="font-sans text-base md:text-lg text-ink/85 leading-7 md:leading-8 space-y-3">{children}</div>
-    </motion.div>
+    <ScrollSkew max={4}>
+      <motion.div
+        initial={{ opacity: 0, y: 50, rotate: 2 }}
+        whileInView={{ opacity: 1, y: 0, rotate: -1 }}
+        viewport={{ once: true, margin: '-100px' }}
+        transition={{ type: 'spring', stiffness: 90, damping: 16 }}
+        className="relative bg-white border-2 border-ink shadow-[8px_8px_0_0_#2b2a29] p-6 md:p-8 bg-ruled-paper bg-ruled"
+      >
+        <div className={`absolute -top-4 left-6 ${color} border-2 border-ink px-3 py-1 font-handwriting text-xl -rotate-3 shadow-[3px_3px_0_0_#2b2a29]`}>
+          Chapter {n}
+        </div>
+        <WordReveal text={title} className="font-display text-2xl md:text-4xl leading-tight mt-2 mb-4" />
+        <div className="font-sans text-base md:text-lg text-ink/85 leading-7 md:leading-8 space-y-3">{children}</div>
+      </motion.div>
+    </ScrollSkew>
   );
 }
 
@@ -68,7 +73,6 @@ export default function AboutPage() {
   const ballSpin = useTransform(progress, [0, 1], [0, 1800]);
 
   useEffect(() => {
-    window.scrollTo(0, 0);
     document.title = 'My Story | Teang Arpireak';
     return () => { document.title = 'Teang Arpireak | Portfolio'; };
   }, []);
@@ -78,7 +82,7 @@ export default function AboutPage() {
       {/* top bar */}
       <nav className="fixed top-0 left-0 w-full bg-paper/90 backdrop-blur-sm z-50 border-b-2 border-ink border-dashed">
         <div className="max-w-7xl mx-auto px-4 h-16 flex items-center justify-between">
-          <Link to="/" className="flex items-center gap-2 group font-mono font-bold uppercase hover:text-accent-pink transition-colors">
+          <Link to="/" className="flex items-center gap-2 py-2 group font-mono font-bold uppercase hover:text-accent-pink transition-colors">
             <div className="w-8 h-8 rounded-full border-2 border-ink bg-white flex items-center justify-center group-hover:-translate-x-1 transition-transform">
               <ArrowLeft weight="bold" />
             </div>
@@ -159,7 +163,7 @@ export default function AboutPage() {
               <p>A small kid with big energy and lots of questions. This is where my story starts.</p>
             </JournalCard>
           }
-          visual={<Polaroid src="/journal/born.jpg" caption="Hello, world!" rotate={3} tape="bg-accent-pink" className="w-72 md:w-80" />}
+          visual={<Polaroid src="/journal/born.webp" caption="Hello, world!" rotate={3} tape="bg-accent-pink" className="w-72 md:w-80" />}
         />
 
         {/* 2 */}
@@ -173,7 +177,7 @@ export default function AboutPage() {
               <p>I was never indoors. I was running, exploring, and playing all day.</p>
             </JournalCard>
           }
-          visual={<Polaroid src="/journal/temple.jpg" caption="Little explorer" rotate={-3} tape="bg-accent-blue" className="w-72 md:w-96" />}
+          visual={<Polaroid src="/journal/temple.webp" caption="Little explorer" rotate={-3} tape="bg-accent-blue" className="w-72 md:w-96" />}
         />
 
         {/* 3 */}
@@ -189,10 +193,10 @@ export default function AboutPage() {
           visual={
             <div className="relative w-full max-w-md h-[560px] md:h-[620px]">
               <div className="absolute top-0 left-0 w-[74%]">
-                <Polaroid src="/journal/kick.jpg" caption="Corner kick" rotate={-4} tape="bg-accent-yellow" speed={30} />
+                <Polaroid src="/journal/kick.webp" caption="Corner kick" rotate={-4} tape="bg-accent-yellow" speed={30} />
               </div>
               <div className="absolute bottom-0 right-0 w-[70%]">
-                <Polaroid src="/journal/match.jpg" caption="Match day" credit="Angkor Tiger Football Club" rotate={5} tape="bg-accent-pink" speed={55} />
+                <Polaroid src="/journal/match.webp" caption="Match day" credit="Angkor Tiger Football Club" rotate={5} tape="bg-accent-pink" speed={55} />
               </div>
             </div>
           }
@@ -212,13 +216,13 @@ export default function AboutPage() {
           visual={
             <div className="relative w-full max-w-md h-[400px] md:h-[460px]">
               <div className="absolute top-0 left-0 w-[46%]">
-                <Polaroid src="/graphic-design/work-3.jpg" caption="Posters" rotate={-6} tape="bg-accent-green" speed={25} />
+                <Polaroid src="/graphic-design/work-3.webp" caption="Posters" rotate={-6} tape="bg-accent-green" speed={25} />
               </div>
               <div className="absolute top-10 right-0 w-[46%]">
-                <Polaroid src="/graphic-design/work-1.jpg" caption="Brands" rotate={5} tape="bg-accent-pink" speed={50} />
+                <Polaroid src="/graphic-design/work-1.webp" caption="Brands" rotate={5} tape="bg-accent-pink" speed={50} />
               </div>
               <div className="absolute bottom-0 left-[14%] w-[72%]">
-                <Polaroid src="/projects/kairo/01-dashboard.png" caption="Screens" rotate={-2} tape="bg-accent-yellow" speed={35} />
+                <Polaroid src="/projects/kairo/01-dashboard.webp" caption="Screens" rotate={-2} tape="bg-accent-yellow" speed={35} />
               </div>
             </div>
           }
@@ -238,13 +242,13 @@ export default function AboutPage() {
                   See my work
                   <ArrowRight weight="bold" className="group-hover:translate-x-1 transition-transform" />
                 </Link>
-                <a href="mailto:broreakzxz@gmail.com" className="inline-flex items-center gap-2 bg-accent-yellow px-5 py-2 font-mono font-bold uppercase border-2 border-ink shadow-[4px_4px_0_0_#2b2a29] hover:shadow-none hover:translate-x-1 hover:translate-y-1 transition-all">
+                <a href={`mailto:${CONTACT_EMAIL}`} className="inline-flex items-center gap-2 bg-accent-yellow px-5 py-2 font-mono font-bold uppercase border-2 border-ink shadow-[4px_4px_0_0_#2b2a29] hover:shadow-none hover:translate-x-1 hover:translate-y-1 transition-all">
                   Say hi
                 </a>
               </div>
             </JournalCard>
           }
-          visual={<Polaroid src="/photo-1.jpg" caption="That's me!" rotate={-3} tape="bg-accent-blue" className="w-72 md:w-80" />}
+          visual={<Polaroid src="/photo-1.webp" caption="That's me!" rotate={-3} tape="bg-accent-blue" className="w-72 md:w-80" />}
         />
       </main>
 

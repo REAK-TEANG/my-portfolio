@@ -1,9 +1,8 @@
-import React, { useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { ArrowLeft, ArrowUpRight } from '@phosphor-icons/react';
 
-// Mock data for projects
+// Case-study content, keyed by the /project/:id route. Unknown ids fall back to KAIRO.
 const projectsData = {
   'auto-repair': {
     title: 'KAIRO - Auto Repair Workshop System',
@@ -11,7 +10,7 @@ const projectsData = {
     timeline: '2024 - Present',
     description: 'KAIRO is a workshop management system for auto repair shops, designed and built end to end by me. It covers appointments, repair orders, customers and vehicles, spare-parts inventory, invoicing, reports, and a dedicated mechanic workbench, in a bilingual (Khmer / English) interface with light and dark modes.',
     link: 'https://car-repair-system-ebon.vercel.app/',
-    image: '/projects/kairo/01-dashboard.png',
+    image: '/projects/kairo/01-dashboard.webp',
     tags: ['React', 'PHP', 'PostgreSQL', 'UX/UI Design', 'Dashboard'],
     stack: [
       { name: 'React', role: 'Frontend UI' },
@@ -19,13 +18,13 @@ const projectsData = {
       { name: 'PostgreSQL', role: 'Database' },
     ],
     gallery: [
-      { src: '/projects/kairo/00-login.png', caption: 'Login, with Khmer / English switch' },
-      { src: '/projects/kairo/02-appointments.png', caption: 'Appointments: calendar + status filters' },
-      { src: '/projects/kairo/03-repair-jobs.png', caption: 'Repair orders: parts, mechanic, status at a glance' },
-      { src: '/projects/kairo/10-mechanic.png', caption: 'Mechanic workbench: bay mode, job phases, QA checks' },
-      { src: '/projects/kairo/05-vehicles.png', caption: 'Vehicles and service history' },
-      { src: '/projects/kairo/08-invoices.png', caption: 'Invoices & billing with payment progress' },
-      { src: '/projects/kairo/09-reports.png', caption: 'Reports: export to PDF, Excel, or print' },
+      { src: '/projects/kairo/00-login.webp', caption: 'Login, with Khmer / English switch' },
+      { src: '/projects/kairo/02-appointments.webp', caption: 'Appointments: calendar + status filters' },
+      { src: '/projects/kairo/03-repair-jobs.webp', caption: 'Repair orders: parts, mechanic, status at a glance' },
+      { src: '/projects/kairo/10-mechanic.webp', caption: 'Mechanic workbench: bay mode, job phases, QA checks' },
+      { src: '/projects/kairo/05-vehicles.webp', caption: 'Vehicles and service history' },
+      { src: '/projects/kairo/08-invoices.webp', caption: 'Invoices & billing with payment progress' },
+      { src: '/projects/kairo/09-reports.webp', caption: 'Reports: export to PDF, Excel, or print' },
     ],
     challenge: 'Repair shops often rely on pen-and-paper or disconnected software to manage customers, parts inventory, and active jobs. This creates bottlenecks and poor customer communication.',
     solution: 'Designed a unified digital platform that brings customers, vehicles, mechanics, and inventory together in one seamless dashboard, improving turnaround times and business insights.'
@@ -36,17 +35,12 @@ export default function ProjectDetail() {
   const { id } = useParams();
   const project = projectsData[id] || projectsData['auto-repair'];
 
-  // Scroll to top on load
-  useEffect(() => {
-    window.scrollTo(0, 0);
-  }, [id]);
-
   return (
     <div className="min-h-svh bg-paper pb-24 bg-ruled-paper bg-ruled">
       {/* Header / Navigation */}
       <nav className="fixed top-0 left-0 w-full bg-paper/90 backdrop-blur-sm z-50 border-b-2 border-ink border-dashed">
         <div className="max-w-7xl mx-auto px-4 h-16 flex items-center">
-          <Link to="/" className="flex items-center gap-2 group font-mono font-bold uppercase hover:text-accent-pink transition-colors">
+          <Link to="/" className="flex items-center gap-2 py-2 group font-mono font-bold uppercase hover:text-accent-pink transition-colors">
             <div className="w-8 h-8 rounded-full border-2 border-ink bg-white flex items-center justify-center group-hover:-translate-x-1 transition-transform">
               <ArrowLeft weight="bold" />
             </div>

@@ -1,12 +1,6 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-
-const SEEN_KEY = 'preloaderSeen';
-
-/** True if the loading screen already played in this browser session. */
-export const hasSeenPreloader = () => {
-  try { return sessionStorage.getItem(SEEN_KEY) === '1'; } catch { return false; }
-};
+import { hasSeenPreloader, markPreloaderSeen } from '../utils/session';
 
 export default function Preloader() {
   const [isLoading, setIsLoading] = useState(() => !hasSeenPreloader());
@@ -35,14 +29,14 @@ export default function Preloader() {
 
     const timer = setTimeout(() => {
       setIsLoading(false);
-      try { sessionStorage.setItem(SEEN_KEY, '1'); } catch { /* ignore */ }
+      markPreloaderSeen();
     }, duration);
 
     return () => {
       clearTimeout(timer);
       clearInterval(interval);
     };
-  }, []);
+  }, [isLoading]);
 
   return (
     <AnimatePresence>

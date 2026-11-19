@@ -109,8 +109,9 @@ export default function About() {
       stack.addEventListener('mouseenter', handleMouseEnter);
       stack.addEventListener('mouseleave', handleMouseLeave);
 
-      // 3. Draggable Skills
-      Draggable.create('.skill-badge', {
+      // 3. Draggable skills: mouse only (on touch screens dragging would hijack scrolling)
+      const canDrag = window.matchMedia('(hover: hover) and (pointer: fine)').matches;
+      if (canDrag) Draggable.create('.skill-badge', {
         type: 'x,y',
         bounds: sectionRef.current,
         inertia: true,
@@ -171,7 +172,7 @@ export default function About() {
               <div ref={youngPolaroidRef} className="absolute inset-0" style={{ zIndex: 1 }}>
                 <div className="bg-white p-4 pb-12 shadow-[8px_8px_0_0_#2b2a29] border-2 border-ink">
                   <div className="bg-gray-200 aspect-[4/5] overflow-hidden border-2 border-ink pointer-events-none">
-                    <img src={isYoungTop ? "/photo-1.jpg" : "/photo-young.jpg"} alt={isYoungTop ? "Teang Arpireak" : "Younger Teang"} className="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-500" loading="lazy" />
+                    <img src={isYoungTop ? "/photo-1.webp" : "/photo-young.webp"} alt={isYoungTop ? "Teang Arpireak" : "Younger Teang"} className="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-500" loading="lazy" />
                   </div>
                   <p className="font-handwriting text-2xl text-center mt-4 text-ink pointer-events-none">{isYoungTop ? "That's me!" : "Way back!"}</p>
                 </div>
@@ -182,7 +183,7 @@ export default function About() {
                 <div className="absolute -top-4 left-1/2 -translate-x-1/2 w-24 h-8 bg-white/60 backdrop-blur-sm shadow-sm rotate-2 z-10 border border-black/5" />
                 <div className="bg-white p-4 pb-12 shadow-[8px_8px_0_0_#2b2a29] border-2 border-ink">
                   <div className="bg-gray-200 aspect-[4/5] overflow-hidden border-2 border-ink pointer-events-none">
-                    <img src={isYoungTop ? "/photo-young.jpg" : "/photo-1.jpg"} alt={isYoungTop ? "Younger Teang" : "Teang Arpireak"} className="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-500" loading="lazy" />
+                    <img src={isYoungTop ? "/photo-young.webp" : "/photo-1.webp"} alt={isYoungTop ? "Younger Teang" : "Teang Arpireak"} className="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-500" loading="lazy" />
                   </div>
                   <p className="font-handwriting text-2xl text-center mt-4 text-ink pointer-events-none">{isYoungTop ? "Way back!" : "That's me!"}</p>
                 </div>
@@ -231,8 +232,8 @@ export default function About() {
               </svg>
             </h3>
             <div className="flex flex-wrap gap-3">
-              {designSkills.map((skill, idx) => (
-                <div key={`design-${idx}`} className="skill-badge bg-accent-blue/20 border-2 border-ink px-4 py-2 torn-edge font-mono font-bold text-sm cursor-grab active:cursor-grabbing hover:bg-accent-blue transition-colors shadow-[2px_2px_0_0_#2b2a29] z-10 inline-flex items-center gap-2">
+              {designSkills.map((skill) => (
+                <div key={skill} className="skill-badge bg-accent-blue/20 border-2 border-ink px-4 py-2 torn-edge font-mono font-bold text-sm cursor-grab active:cursor-grabbing hover:bg-accent-blue transition-colors shadow-[2px_2px_0_0_#2b2a29] z-10 inline-flex items-center gap-2">
                   {React.createElement(skillIcons[skill] || Code, { size: 16, weight: 'bold' })}
                   {skill}
                 </div>
@@ -247,8 +248,8 @@ export default function About() {
               </svg>
             </h3>
             <div className="flex flex-wrap gap-3">
-              {devSkills.map((skill, idx) => (
-                <div key={`dev-${idx}`} className="skill-badge bg-accent-yellow/30 border-2 border-ink px-4 py-2 torn-edge font-mono font-bold text-sm cursor-grab active:cursor-grabbing hover:bg-accent-yellow transition-colors shadow-[2px_2px_0_0_#2b2a29] z-10 inline-flex items-center gap-2">
+              {devSkills.map((skill) => (
+                <div key={skill} className="skill-badge bg-accent-yellow/30 border-2 border-ink px-4 py-2 torn-edge font-mono font-bold text-sm cursor-grab active:cursor-grabbing hover:bg-accent-yellow transition-colors shadow-[2px_2px_0_0_#2b2a29] z-10 inline-flex items-center gap-2">
                   {React.createElement(skillIcons[skill] || Code, { size: 16, weight: 'bold' })}
                   {skill}
                 </div>

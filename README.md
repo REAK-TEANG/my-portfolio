@@ -1,16 +1,61 @@
-# React + Vite
+# Teang Arpireak: Portfolio
 
-This template provides a minimal setup to get React working in Vite with HMR and some Oxlint rules.
+A scrapbook-style portfolio for a UI/UX + graphic designer who also builds.
+Home page, a scroll-driven "My Story" journal, and a KAIRO case study.
 
-Currently, two official plugins are available:
+**Stack:** React 19, Vite, Tailwind CSS 3, Framer Motion, GSAP, Lenis (smooth scroll), React Router.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+## Run it
 
-## React Compiler
+```bash
+npm install
+npm run dev        # local dev server
+npm run build      # production build into dist/
+npm run preview    # serve the production build locally
+npm run lint       # oxlint (should report 0 warnings)
+```
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+## Project layout
 
-## Expanding the Oxlint configuration
+```
+src/
+  App.jsx               routes, intro timing, section order
+  components/           Hero, About, Projects (KAIRO), GraphicWorks, Playground,
+                        Contact, Footer, Navigation, Marquee, Lightbox, ...
+  pages/                AboutPage (the journal), ProjectDetail (case study)
+  utils/session.js      "show the loading screen once per session" helper
+public/
+  graphic-design/       poster images (WebP)
+  journal/              photos for the My Story page (WebP)
+  projects/kairo/       KAIRO screenshots (WebP)
+```
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and Oxlint's TypeScript related rules in your project.
+## Editing content
+
+| What | Where |
+|---|---|
+| Graphic work cards | `works` list at the top of `src/components/GraphicWorks.jsx` |
+| KAIRO case study text and gallery | `projectsData` in `src/pages/ProjectDetail.jsx` |
+| KAIRO card on the home page | `screens`, `stickers`, `stack` in `src/components/Projects.jsx` |
+| My Story chapters | `Chapter` blocks in `src/pages/AboutPage.jsx` |
+| Fonts and colors | `tailwind.config.js` and the font link in `index.html` |
+
+## Contact form
+
+Messages are delivered to the address in `src/config.js` (`CONTACT_EMAIL`) through [Formspree](https://formspree.io).
+
+**One-time setup**
+
+1. On formspree.io create a free account, choose **New form**, enter the inbox address and confirm the verification email.
+2. Copy the form URL (`https://formspree.io/f/xxxxxxxx`).
+3. Locally: copy `.env.example` to `.env`, paste the URL after `VITE_FORM_ENDPOINT=`, restart `npm run dev`.
+4. On Vercel: **Project -> Settings -> Environment Variables**, add `VITE_FORM_ENDPOINT` with the same URL, then **redeploy**
+   (Vite bakes `VITE_*` values in at build time, so a change only shows up after a new build).
+5. In Formspree, limit the form to your site's domain, send one test message, and check the inbox **and Spam** folder.
+
+Built in: a hidden honeypot field catches bots, input lengths are capped, and replies go straight to the visitor.
+Without `VITE_FORM_ENDPOINT` (for example locally) the form opens the visitor's email app instead and says so honestly.
+
+## Images
+
+Use WebP. Keep long edges around 1200 to 2000 px: bigger files only slow the site down.

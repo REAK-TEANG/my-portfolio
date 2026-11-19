@@ -1,7 +1,10 @@
-import React from 'react';
 import { motion } from 'framer-motion';
 import { LinkedinLogo, InstagramLogo, BehanceLogo, SoccerBall, ArrowUpRight } from '@phosphor-icons/react';
 import Marquee from './Marquee';
+import useScrollToSection from '../utils/useScrollToSection';
+import { CONTACT_EMAIL } from '../config';
+
+const YEAR = new Date().getFullYear();
 
 const socials = [
   { href: 'https://www.linkedin.com/in/teang-arpireak-569962289', Icon: LinkedinLogo, bg: 'bg-accent-yellow', label: 'LinkedIn' },
@@ -10,7 +13,8 @@ const socials = [
 ];
 
 export default function Footer() {
-  const toTop = () => window.scrollTo({ top: 0, behavior: 'smooth' });
+  const scrollToSection = useScrollToSection();
+  const toTop = () => scrollToSection('home');
 
   return (
     <footer id="footer" className="relative bg-ink text-paper overflow-hidden">
@@ -27,7 +31,7 @@ export default function Footer() {
         </motion.p>
 
         <motion.a
-          href="mailto:broreakzxz@gmail.com"
+          href={`mailto:${CONTACT_EMAIL}`}
           initial={{ opacity: 0, y: 40, rotate: -2 }}
           whileInView={{ opacity: 1, y: 0, rotate: -2 }}
           whileHover={{ rotate: 0, scale: 1.03 }}
@@ -39,7 +43,7 @@ export default function Footer() {
           <ArrowUpRight weight="bold" className="w-10 h-10 md:w-20 md:h-20 group-hover:translate-x-2 group-hover:-translate-y-2 transition-transform" />
         </motion.a>
 
-        <p className="font-mono text-sm md:text-base mt-6 text-paper/70">broreakzxz@gmail.com</p>
+        <p className="font-mono text-sm md:text-base mt-6 text-paper/70">{CONTACT_EMAIL}</p>
 
         <div className="flex items-center justify-center gap-4 mt-8">
           {socials.map(({ href, Icon, bg, label }) => (
@@ -69,7 +73,7 @@ export default function Footer() {
       <div className="max-w-6xl mx-auto px-4 pb-10 text-center relative">
         <div className="flex flex-col md:flex-row items-center justify-between gap-6 mt-6">
           <p className="font-mono text-xs font-bold uppercase text-paper/50">
-            © {new Date().getFullYear()} Teang Arpireak · Made in Siem Reap with ✿
+            © {YEAR} Teang Arpireak · Made in Siem Reap with ✿
           </p>
 
           <motion.button

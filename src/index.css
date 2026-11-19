@@ -63,24 +63,8 @@
       linear-gradient(315deg, #f6f5f1 25%, transparent 25%) -9px 0 / 18px 18px,
       linear-gradient(45deg, #f6f5f1 25%, transparent 25%) -9px 0 / 18px 18px;
   }
-
-  /* Scrolling tape strip */
-  .marquee-track {
-    display: flex;
-    width: max-content;
-    animation: marquee 28s linear infinite;
-  }
-  .marquee-track.reverse {
-    animation-direction: reverse;
-  }
-}
-
-@keyframes marquee {
-  from { transform: translateX(0); }
-  to { transform: translateX(-50%); }
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .marquee-track { animation: none; }
   html { scroll-behavior: auto; }
 }

@@ -1,47 +1,52 @@
-import React, { useRef, useEffect, useState } from 'react';
+import { useRef, useEffect, useState } from 'react';
 import { motion, useScroll, useTransform } from 'framer-motion';
 import gsap from 'gsap';
 import { Star, Heart, Lightning, Flower, SoccerBall } from '@phosphor-icons/react';
 
 const WORDS = ['designer', 'developer', 'football kid', 'problem solver'];
+const NAME_LETTERS = ['P', 'H', 'I', 'R', 'E', 'A', 'K']; // all unique, so safe as keys
 
 /** Types and deletes the words one by one. */
 function Typewriter({ words = WORDS }) {
-  const [i, setI] = useState(0);
-  const [text, setText] = useState('');
-  const [deleting, setDeleting] = useState(false);
+  // One state object so every transition happens inside a timer callback
+  const [state, setState] = useState({ index: 0, text: '', deleting: false });
 
   useEffect(() => {
-    const word = words[i % words.length];
-    let t;
+    const { index, text, deleting } = state;
+    const word = words[index % words.length];
+    let delay = deleting ? 45 : 90;
+    let next;
+
     if (!deleting && text === word) {
-      t = setTimeout(() => setDeleting(true), 1400);
+      delay = 1400; // pause on the finished word
+      next = { index, text, deleting: true };
     } else if (deleting && text === '') {
-      setDeleting(false);
-      setI((n) => n + 1);
+      delay = 250; // short beat before the next word
+      next = { index: index + 1, text: '', deleting: false };
     } else {
-      t = setTimeout(
-        () => setText(deleting ? word.slice(0, text.length - 1) : word.slice(0, text.length + 1)),
-        deleting ? 45 : 90
-      );
+      const nextText = deleting ? text.slice(0, -1) : word.slice(0, text.length + 1);
+      next = { index, deleting, text: nextText };
     }
-    return () => clearTimeout(t);
-  }, [text, deleting, i, words]);
+
+    const timer = setTimeout(() => setState(next), delay);
+    return () => clearTimeout(timer);
+  }, [state, words]);
 
   return (
     <span className="bg-accent-pink/30 px-2 border-b-4 border-ink">
-      {text}
+      {state.text}
       <span className="inline-block w-[3px] h-[1em] bg-ink align-middle ml-1 animate-pulse" />
     </span>
   );
 }
 
+// `phone: true` stickers also show on small screens (the others need more room)
 const heroStickers = [
-  { Icon: Star, bg: 'bg-accent-yellow', pos: 'top-[24%] left-[4%]', rotate: -12, delay: 2.0 },
-  { Icon: Heart, bg: 'bg-accent-pink', pos: 'top-[18%] right-[5%]', rotate: 10, delay: 2.2 },
-  { Icon: Lightning, bg: 'bg-accent-green', pos: 'bottom-[26%] left-[5%]', rotate: 8, delay: 2.4 },
-  { Icon: SoccerBall, bg: 'bg-white', pos: 'bottom-[16%] right-[6%]', rotate: -8, delay: 2.6 },
-  { Icon: Flower, bg: 'bg-accent-blue', pos: 'top-[46%] left-[12%]', rotate: 15, delay: 2.8 },
+  { name: 'star', Icon: Star, bg: 'bg-accent-yellow', pos: 'top-[24%] left-[4%]', rotate: -12, delay: 2.0 },
+  { name: 'heart', Icon: Heart, bg: 'bg-accent-pink', pos: 'top-[17%] right-[4%]', rotate: 10, delay: 2.2, phone: true },
+  { name: 'bolt', Icon: Lightning, bg: 'bg-accent-green', pos: 'bottom-[26%] left-[5%]', rotate: 8, delay: 2.4 },
+  { name: 'ball', Icon: SoccerBall, bg: 'bg-white', pos: 'bottom-[10%] right-[5%]', rotate: -8, delay: 2.6, phone: true },
+  { name: 'flower', Icon: Flower, bg: 'bg-accent-blue', pos: 'top-[46%] left-[12%]', rotate: 15, delay: 2.8 },
 ];
 
 export default function Hero({ globalDelay = 0 }) {
@@ -129,7 +134,7 @@ export default function Hero({ globalDelay = 0 }) {
   };
 
   return (
-    <section id="home" ref={heroRef} className="h-svh flex flex-col items-center justify-center relative px-4">
+    <section id="home" ref={heroRef} className="min-h-svh flex flex-col items-center justify-center relative px-4 pt-24 pb-16">
       
       {/* Parallax Container for Main Content */}
       <motion.div style={{ y: yText, opacity: opacityText }} className="w-full flex flex-col items-center justify-center z-10 will-change-transform">
@@ -187,8 +192,8 @@ export default function Hero({ globalDelay = 0 }) {
               animate="visible"
               className="font-display text-6xl md:text-8xl lg:text-9xl text-ink tracking-tight uppercase flex"
             >
-              {['P', 'H', 'I', 'R', 'E', 'A', 'K'].map((letter, index) => (
-                <motion.span key={index} variants={child} className="inline-block mx-1">
+              {NAME_LETTERS.map((letter) => (
+                <motion.span key={letter} variants={child} className="inline-block mx-1">
                   <span 
                     className="inline-block cursor-default"
                     onMouseEnter={handleLetterHover}
@@ -290,9 +295,9 @@ export default function Hero({ globalDelay = 0 }) {
       </motion.div>
 
       {/* Draggable stickers: grab one! */}
-      {heroStickers.map(({ Icon, bg, pos, rotate, delay }, idx) => (
+      {heroStickers.map(({ name, Icon, bg, pos, rotate, delay, phone }, idx) => (
         <motion.div
-          key={idx}
+          key={name}
           drag
           dragMomentum
           dragElastic={0.2}
@@ -302,7 +307,7 @@ export default function Hero({ globalDelay = 0 }) {
           whileTap={{ scale: 1.2, rotate: 0 }}
           whileDrag={{ scale: 1.25, rotate: 0 }}
           transition={{ type: 'spring', stiffness: 220, damping: 12, delay: delay + globalDelay - 1.5 }}
-          className={`absolute ${pos} hidden sm:flex w-14 h-14 md:w-16 md:h-16 ${bg} ${idx % 2 ? 'rounded-2xl' : 'rounded-full'} border-2 border-ink items-center justify-center shadow-[4px_4px_0_0_#2b2a29] cursor-grab active:cursor-grabbing z-30`}
+          className={`absolute ${pos} ${phone ? 'flex' : 'hidden sm:flex'} w-11 h-11 sm:w-14 sm:h-14 md:w-16 md:h-16 ${bg} ${idx % 2 ? 'rounded-2xl' : 'rounded-full'} border-2 border-ink items-center justify-center shadow-[4px_4px_0_0_#2b2a29] cursor-grab active:cursor-grabbing z-30`}
         >
           <Icon size={30} weight="bold" className="text-ink pointer-events-none" />
         </motion.div>
@@ -313,7 +318,7 @@ export default function Hero({ globalDelay = 0 }) {
         <motion.div style={{ y: yAvatars1 }}>
           <motion.div initial={{ scale: 0 }} animate={{ scale: 1 }} transition={{ delay: 1.6 + globalDelay, type: "spring" }}>
             <motion.div animate={{ y: [0, -10, 0] }} transition={{ repeat: Infinity, duration: 4, ease: "easeInOut" }} className="w-24 h-24 rounded-full overflow-hidden border-4 border-accent-pink shadow-[4px_4px_0_0_#2b2a29]">
-              <img src="/photo-2.jpg" alt="Teang Arpireak - 1" className="w-full h-full object-cover" loading="lazy" />
+              <img src="/photo-2.webp" alt="Teang Arpireak - 1" className="w-full h-full object-cover" loading="lazy" />
             </motion.div>
           </motion.div>
         </motion.div>
@@ -323,7 +328,7 @@ export default function Hero({ globalDelay = 0 }) {
         <motion.div style={{ y: yAvatars2 }}>
           <motion.div initial={{ scale: 0 }} animate={{ scale: 1 }} transition={{ delay: 1.8 + globalDelay, type: "spring" }}>
             <motion.div animate={{ y: [0, 15, 0] }} transition={{ repeat: Infinity, duration: 5, ease: "easeInOut" }} className="w-32 h-32 rounded-full overflow-hidden border-4 border-accent-yellow shadow-[4px_4px_0_0_#2b2a29]">
-              <img src="/photo-3.jpg" alt="Teang Arpireak - 2" className="w-full h-full object-cover" loading="lazy" />
+              <img src="/photo-3.webp" alt="Teang Arpireak - 2" className="w-full h-full object-cover" loading="lazy" />
             </motion.div>
           </motion.div>
         </motion.div>

@@ -1,6 +1,7 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
+import useScrollToSection from '../utils/useScrollToSection';
 import { Smiley, LinkedinLogo, InstagramLogo, BehanceLogo, List, X } from '@phosphor-icons/react';
 
 const navLinks = [
@@ -21,6 +22,7 @@ export default function Navigation() {
   const [active, setActive] = useState('home');
   const [menuOpen, setMenuOpen] = useState(false);
   const navigate = useNavigate();
+  const scrollToSection = useScrollToSection();
 
   useEffect(() => {
     const sections = ['home', 'about', 'projects', 'graphics', 'playground', 'contact', 'footer'];
@@ -49,7 +51,7 @@ export default function Navigation() {
       return;
     }
     setActive(id);
-    document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' });
+    scrollToSection(id);
   };
 
   return (

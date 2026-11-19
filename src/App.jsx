@@ -1,8 +1,11 @@
-import React, { useEffect, useState, lazy, Suspense } from 'react';
+import { useEffect, useState, lazy, Suspense } from 'react';
 import { Routes, Route, Navigate, useLocation } from 'react-router-dom';
 import { ReactLenis } from 'lenis/react';
+import { MotionConfig } from 'framer-motion';
 import Navigation from './components/Navigation';
-import Preloader, { hasSeenPreloader } from './components/Preloader';
+import Preloader from './components/Preloader';
+import { hasSeenPreloader } from './utils/session';
+import useScrollToSection from './utils/useScrollToSection';
 import Hero from './components/Hero';
 import About from './components/About';
 import Projects from './components/Projects';
@@ -12,7 +15,14 @@ import Contact from './components/Contact';
 import Footer from './components/Footer';
 import Marquee from './components/Marquee';
 import ScrollProgress from './components/ScrollProgress';
+import ScrollSync from './components/ScrollSync';
+import ScrollVelocityProvider from './components/ScrollVelocityProvider';
 import CustomCursor from './components/CustomCursor';
+import ScrollToTop from './components/ScrollToTop';
+// Smooth-scroll feel: a lower lerp glides longer and softer than Lenis' default (0.1).
+// Touch devices keep native scrolling. Defined outside the component so it stays stable.
+const LENIS_OPTIONS = { lerp: 0.075, wheelMultiplier: 0.9 };
+
 // Secondary pages load only when visited (keeps the first load fast)
 const ProjectDetail = lazy(() => import('./pages/ProjectDetail'));
 const AboutPage = lazy(() => import('./pages/AboutPage'));
@@ -21,15 +31,14 @@ function HomePage() {
   const { hash } = useLocation();
   // Intro delay: long if the loading screen will play, short if already seen this session
   const [introDelay] = useState(() => (hasSeenPreloader() ? 0.1 : 1.7));
+  const scrollToSection = useScrollToSection();
 
   // Support links like "/#projects" coming from other pages
   useEffect(() => {
     if (!hash) return;
-    const t = setTimeout(() => {
-      document.getElementById(hash.slice(1))?.scrollIntoView({ behavior: 'smooth' });
-    }, introDelay * 1000 + 700);
+    const t = setTimeout(() => scrollToSection(hash.slice(1)), introDelay * 1000 + 700);
     return () => clearTimeout(t);
-  }, [hash, introDelay]);
+  }, [hash, introDelay, scrollToSection]);
 
   return (
     <div className="relative w-full min-h-svh">
@@ -37,7 +46,7 @@ function HomePage() {
       <Navigation />
       <main>
         {/* Pinned Hero Section that the rest of the content scrolls over */}
-        <div className="sticky top-0 h-svh w-full overflow-hidden">
+        <div className="sticky top-0 min-h-svh w-full overflow-hidden [@media(max-height:760px)]:static">
           <Hero globalDelay={introDelay} />
         </div>
 
@@ -59,17 +68,24 @@ function HomePage() {
 
 function App() {
   return (
-    <ReactLenis root>
-      <ScrollProgress />
-      <CustomCursor />
-      <Suspense fallback={<div className="min-h-svh bg-paper" />}>
-        <Routes>
-          <Route path="/" element={<HomePage />} />
-          <Route path="/about" element={<AboutPage />} />
-          <Route path="/project/:id" element={<ProjectDetail />} />
-          <Route path="*" element={<Navigate to="/" replace />} />
-        </Routes>
-      </Suspense>
+    <ReactLenis root options={LENIS_OPTIONS}>
+      <ScrollSync />
+      {/* Visitors who ask their device for less motion get calmer transform animations */}
+      <MotionConfig reducedMotion="user">
+        <ScrollVelocityProvider>
+          <ScrollToTop />
+          <ScrollProgress />
+          <CustomCursor />
+          <Suspense fallback={<div className="min-h-svh bg-paper" />}>
+            <Routes>
+              <Route path="/" element={<HomePage />} />
+              <Route path="/about" element={<AboutPage />} />
+              <Route path="/project/:id" element={<ProjectDetail />} />
+              <Route path="*" element={<Navigate to="/" replace />} />
+            </Routes>
+          </Suspense>
+        </ScrollVelocityProvider>
+      </MotionConfig>
     </ReactLenis>
   );
 }
