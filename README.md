@@ -56,6 +56,16 @@ Messages are delivered to the address in `src/config.js` (`CONTACT_EMAIL`) throu
 Built in: a hidden honeypot field catches bots, input lengths are capped, and replies go straight to the visitor.
 Without `VITE_FORM_ENDPOINT` (for example locally) the form opens the visitor's email app instead and says so honestly.
 
+## Deploy (Vercel)
+
+1. Push to GitHub, then on vercel.com choose **Add New -> Project** and import the repo.
+   Vercel detects Vite on its own (build `npm run build`, output `dist`).
+2. Before the first deploy, add `VITE_FORM_ENDPOINT` under **Environment Variables** (see Contact form above).
+3. Click **Deploy**. Every push to `main` redeploys automatically.
+
+`vercel.json` makes pages like `/about` and `/project/auto-repair` keep working on refresh and when shared
+(they are client-side routes, so the server must always serve `index.html`), and caches the hashed files in `/assets`.
+
 ## Images
 
 Use WebP. Keep long edges around 1200 to 2000 px: bigger files only slow the site down.
